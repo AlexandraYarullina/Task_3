@@ -15,7 +15,6 @@ public class LoginTest extends BaseTest {
     RegistrationPage registrationPage;
     RecoveryPasswordPage recoveryPasswordPage;
 
-
     @BeforeEach
     public void SetUp() {
         loginPage = new LoginPage(driver);
