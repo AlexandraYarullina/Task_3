@@ -45,7 +45,7 @@ public class MainPage {
 
     @Step("Ожидание загрузки главной страницы")
     public void waitForLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(5))
+        new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.visibilityOfElementLocated(sectionBun));
     }
 
@@ -61,18 +61,22 @@ public class MainPage {
 
     @Step("Нажатие на раздел Булки")
     public void checkSectionBunClick () {
+        waitForVisibility(sectionBun);
         driver.findElement(sectionBun).click();
     }
+
     @Step("Нажатие на раздел Соусы")
     public void checkSectionSauceClick () {
         waitForVisibility(sectionSauce);
         driver.findElement(sectionSauce).click();
     }
-    @Step("Нажатие на на раздел Начинки")
+
+    @Step("Нажатие на раздел Начинки")
     public void checkSectionFillingClick () {
         waitForVisibility(sectionFilling);
         driver.findElement(sectionFilling).click();
     }
+
     @Step("Ожидание загрузки элементов")
     public void waitForVisibility(By element) {
         new WebDriverWait(driver, Duration.ofSeconds(3))

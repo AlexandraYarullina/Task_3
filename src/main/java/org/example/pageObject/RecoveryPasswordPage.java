@@ -31,7 +31,7 @@ public class RecoveryPasswordPage {
 
     @Step("Ожидание загрузки страницы Восстановление пароля")
     public void waitForLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(15))
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(driver.findElement(textRecoveryPassword)));
     }
 

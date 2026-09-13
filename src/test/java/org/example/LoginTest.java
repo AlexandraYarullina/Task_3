@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.APIRequest.UserRequest;
+import org.example.POJO.DataUser;
 import org.example.pageObject.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.example.utils.Constants.*;
+import static org.example.utils.RandomData.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTest extends BaseTest {
@@ -14,13 +18,25 @@ public class LoginTest extends BaseTest {
     LoginPage loginPage;
     RegistrationPage registrationPage;
     RecoveryPasswordPage recoveryPasswordPage;
+    UserRequest userRequest = new UserRequest();
+    DataUser dataUser = new DataUser(EMAIL, PASSWORD, NAME);
+    private String accessToken;
 
-    @BeforeEach
+        @BeforeEach
     public void SetUp() {
         loginPage = new LoginPage(driver);
         mainPage = new MainPage(driver);
         registrationPage = new RegistrationPage(driver);
         recoveryPasswordPage = new RecoveryPasswordPage(driver);
+        userRequest.setUp();
+        userRequest.setDataUser(dataUser);
+        // создаём пользователя через API
+        userRequest.createUser();
+        // проверяем, что пользователь создан
+        userRequest.loginUser()
+                    .then().assertThat().body("success", equalTo(true))
+                    .statusCode(OK_STATUS_COD);
+        accessToken = userRequest.loginUser().then().extract().path("accessToken");
     }
 
     @Test
@@ -44,6 +60,7 @@ public class LoginTest extends BaseTest {
         mainPage.waitForLoad();
         // проверка видимости надписи раздела 'Булки'
         assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
+
     }
 
     @Test
@@ -72,11 +89,11 @@ public class LoginTest extends BaseTest {
     @Test
     @DisplayName("Авторизация через кнопку на странице регистрации")
     public void checkLoginRegistrationPage() {
-        // открытие главной страницы
+        // открытие страницы регистрации
         registrationPage.openRegistrationPage();
-        // ожидание загрузки страницы регистрации
+        //ожидание загрузки страницы регистрации
         registrationPage.waitForLoad();
-        // нажатие на кнопку 'Личный кабинет'
+        // нажатие на кнопку 'Войти'
         registrationPage.loginRegistrationPageButtonClick();
         // ожидание загрузки страницы авторизации
         loginPage.waitForLoad();
@@ -91,6 +108,7 @@ public class LoginTest extends BaseTest {
         // проверка видимости надписи раздела 'Булки'
         assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
     }
+
     @Test
     @DisplayName("Авторизация через кнопку в форме восстановления пароля")
     public void checkLoginRecoveryPasswordPage() {
@@ -112,5 +130,14 @@ public class LoginTest extends BaseTest {
         mainPage.waitForLoad();
         // проверка видимости надписи раздела 'Булки'
         assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
+    }
+
+    @AfterEach
+    @DisplayName("Удаление пользователя по токену")
+    public void deleteUser() {
+        if (accessToken!=null) {
+            userRequest.deleteUser(accessToken)
+                    .then().assertThat().statusCode(ACCEPTED_STATUS_COD);
+        }
     }
 }
