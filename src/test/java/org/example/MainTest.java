@@ -11,12 +11,34 @@ public class MainTest extends BaseTest{
     MainPage mainPage;
 
     @BeforeEach
-    public void SetUp() {
+    public void setUp() {
         mainPage = new MainPage(driver);
     }
 
     @Test
-    @DisplayName("Проверка перехода в раздел Начинки")
+    @DisplayName("Проверка перехода в раздел 'Булки'")
+    public void checkActiveBunInConstructor() {
+        // открытие главной страницы
+        mainPage.openMainPage();
+        // проверка, что раздел 'Булки' активен
+        assertTrue(mainPage.isBunsTabActive(), "Раздел 'Булки' не активен");
+    }
+
+    @Test
+    @DisplayName("Проверка перехода в раздел 'Соусы'")
+    public void checkActiveSauceInConstructor() {
+        // открытие главной страницы
+        mainPage.openMainPage();
+        // ожидание загрузки главной страницы
+        mainPage.waitForLoad();
+        // переход в раздел Соусы
+        mainPage.checkSectionSauceClick();
+        // проверка, что раздел 'Соусы' активен
+        assertTrue(mainPage.isSaucesTabActive(), "Раздел 'Соусы' не активен");
+    }
+
+    @Test
+    @DisplayName("Проверка перехода в раздел 'Начинки'")
     public void checkActiveFillingInConstructor() {
         // открытие главной страницы
         mainPage.openMainPage();
@@ -24,35 +46,7 @@ public class MainTest extends BaseTest{
         mainPage.waitForLoad();
         // переход в раздел Начинки
         mainPage.checkSectionFillingClick();
-        // проверка, что раздел Начинки активна
-        assertTrue(mainPage.sectionFillingIsDisplayed(), "Раздел 'Начинки' не активен");
-    }
-
-    @Test
-    @DisplayName("Проверка перехода в раздел 'Соусы'")
-    public void checkActiveSauceInConstructor(){
-        // открытие главной страницы
-        mainPage.openMainPage();
-        // ожидание загрузки главной страницы
-        mainPage.waitForLoad();
-        // переход в раздел Соусы
-        mainPage.checkSectionSauceClick();
-        // проверка, что раздел Соусы активна
-        assertTrue(mainPage.sectionSauceIsDisplayed(), "Раздел 'Соусы' не активен");
-    }
-
-    @Test
-    @DisplayName("Проверка перехода в раздел 'Булки'")
-    public void checkActiveBunInConstructor(){
-        // открытие главной страницы
-        mainPage.openMainPage();
-        // ожидание загрузки главной страницы
-        mainPage.waitForLoad();
-        // переход в раздел Соусы
-        mainPage.checkSectionSauceClick();
-        // переход в раздел Булки
-        mainPage.checkSectionBunClick();
-        // проверка, что раздел Булки активна
-        assertTrue(mainPage.sectionBunIsDisplayed(), "Раздел 'Булки' не активен");
+        // проверка, что раздел 'Начинки' активен
+        assertTrue(mainPage.isFillingsTabActive(), "Раздел 'Начинки' не активен");
     }
 }

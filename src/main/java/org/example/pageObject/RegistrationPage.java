@@ -25,9 +25,9 @@ public class RegistrationPage{
     // локатор для поля кнопки зарегистрироваться
     private By registrationButton = By.xpath("//button[text()='Зарегистрироваться']");
     // локатор для кнопки Войти
-    private By loginRegistrationPageButton=By.xpath("//a[@class='Auth_link__1fOlj' and text()='Войти']");
+    private By loginRegistrationPageButton=By.xpath("//a[text()='Войти']");
     // локатор для сообщения о неккоректном пароле
-    private By incorrectPasswordLabel = By.xpath("//p[@class='input__error text_type_main-default' and text()='Некорректный пароль']");
+    private By incorrectPasswordLabel = By.xpath("//p[text()='Некорректный пароль']");
 
     // конструктор класса
     public RegistrationPage(WebDriver driver) {
@@ -61,7 +61,7 @@ public class RegistrationPage{
     }
 
     @Step("Нажатие на кнопку зарегестрироваться")
-    public void RegistrationButtonClick(){
+    public void registrationButtonClick(){
         driver.findElement(registrationButton).click();
     }
 

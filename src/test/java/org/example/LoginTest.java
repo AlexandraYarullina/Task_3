@@ -1,15 +1,15 @@
 package org.example;
 
-import org.example.APIRequest.UserRequest;
-import org.example.POJO.DataUser;
+import org.example.apirequest.UserRequest;
+import org.example.pojo.DataUser;
 import org.example.pageObject.*;
+import org.example.utils.RandomData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.example.utils.Constants.*;
-import static org.example.utils.RandomData.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,11 +19,11 @@ public class LoginTest extends BaseTest {
     RegistrationPage registrationPage;
     RecoveryPasswordPage recoveryPasswordPage;
     UserRequest userRequest = new UserRequest();
-    DataUser dataUser = new DataUser(EMAIL, PASSWORD, NAME);
+    DataUser dataUser = new DataUser(RandomData.getRandomEmail(), RandomData.getRandomPassword(),RandomData.getRandomName());
     private String accessToken;
 
         @BeforeEach
-    public void SetUp() {
+    public void setUp() {
         loginPage = new LoginPage(driver);
         mainPage = new MainPage(driver);
         registrationPage = new RegistrationPage(driver);
@@ -51,16 +51,15 @@ public class LoginTest extends BaseTest {
         // ожидание загрузки страницы авторизации
         loginPage.waitForLoad();
         // заполняем поле email
-        loginPage.setEmailField(EMAIL);
+        loginPage.setEmailField(dataUser.getEmail());
         // заполняем поле пароль
-        loginPage.setPasswordField(PASSWORD);
+        loginPage.setPasswordField(dataUser.getPassword());
         // нажатие на кнопку 'Войти'
         loginPage.loginLoginPageButtonClick();
         // ожидание загрузки главной страницы
         mainPage.waitForLoad();
-        // проверка видимости надписи раздела 'Булки'
-        assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
-
+        // проверка видимости кнопки 'Оформить заказ'
+        assertTrue(mainPage.orderButtonIsDisplayed(), "Авторизация прошла не успешно");
     }
 
     @Test
@@ -75,15 +74,15 @@ public class LoginTest extends BaseTest {
         // ожидание загрузки страницы авторизации
         loginPage.waitForLoad();
         // заполняем поле email
-        loginPage.setEmailField(EMAIL);
+        loginPage.setEmailField(dataUser.getEmail());
         // заполняем поле пароль
-        loginPage.setPasswordField(PASSWORD);
+        loginPage.setPasswordField(dataUser.getPassword());
         // нажатие на кнопку 'Войти'
         loginPage.loginLoginPageButtonClick();
         // ожидание загрузки главной страницы
         mainPage.waitForLoad();
-        // проверка видимости надписи раздела 'Булки'
-        assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
+        // проверка видимости кнопки 'Оформить заказ'
+        assertTrue(mainPage.orderButtonIsDisplayed(), "Авторизация прошла не успешно");
     }
 
     @Test
@@ -98,15 +97,15 @@ public class LoginTest extends BaseTest {
         // ожидание загрузки страницы авторизации
         loginPage.waitForLoad();
         // заполняем поле email
-        loginPage.setEmailField(EMAIL);
+        loginPage.setEmailField(dataUser.getEmail());
         // заполняем поле пароль
-        loginPage.setPasswordField(PASSWORD);
+        loginPage.setPasswordField(dataUser.getPassword());
         // нажатие на кнопку 'Войти'
         loginPage.loginLoginPageButtonClick();
         // ожидание загрузки главной страницы
         mainPage.waitForLoad();
-        // проверка видимости надписи раздела 'Булки'
-        assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
+        // проверка видимости кнопки 'Оформить заказ'
+        assertTrue(mainPage.orderButtonIsDisplayed(), "Авторизация прошла не успешно");
     }
 
     @Test
@@ -121,15 +120,15 @@ public class LoginTest extends BaseTest {
         // ожидание загрузки страницы авторизации
         loginPage.waitForLoad();
         // заполняем поле email
-        loginPage.setEmailField(EMAIL);
+        loginPage.setEmailField(dataUser.getEmail());
         // заполняем поле пароль
-        loginPage.setPasswordField(PASSWORD);
+        loginPage.setPasswordField(dataUser.getPassword());
         // нажатие на кнопку 'Войти'
         loginPage.loginLoginPageButtonClick();
         // ожидание загрузки главной страницы
         mainPage.waitForLoad();
-        // проверка видимости надписи раздела 'Булки'
-        assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
+        // проверка видимости кнопки 'Оформить заказ'
+        assertTrue(mainPage.orderButtonIsDisplayed(), "Авторизация прошла не успешно");
     }
 
     @AfterEach

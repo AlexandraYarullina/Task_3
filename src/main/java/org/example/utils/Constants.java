@@ -5,7 +5,6 @@ public class Constants {
     public static final String URL_LOGIN_PAGE = "https://qa-stellarburgers.education-services.ru/login";
     public static final String URL_MAIN_PAGE = "https://qa-stellarburgers.education-services.ru";
     public static final String URL_RECOVERY_PASSWORD_PAGE = "https://qa-stellarburgers.education-services.ru/forgot-password";
-    public static final String URL_USER_PROFILE_PAGE = "https://qa-stellarburgers.education-services.ru/profile";
 
     public static final String BASE_URI = "https://qa-stellarburgers.education-services.ru/";
     public static final String CREATE_ENDPOINT_USER = "api/auth/register";

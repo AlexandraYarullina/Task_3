@@ -10,7 +10,7 @@ import java.time.Duration;
 
 import static org.example.utils.Constants.URL_RECOVERY_PASSWORD_PAGE;
 
-// класс Восстановление пароля
+    // класс Восстановление пароля
 public class RecoveryPasswordPage {
     private WebDriver driver;
 

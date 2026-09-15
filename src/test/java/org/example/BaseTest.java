@@ -10,7 +10,7 @@ public class BaseTest {
     protected WebDriver driver;
     // Создание драйвера перед каждым тестом
     @BeforeEach
-    void setUp() {
+    void initDriver() {
         String browser = System.getProperty("browser", "chrome").toLowerCase();
 
         switch (browser) {
