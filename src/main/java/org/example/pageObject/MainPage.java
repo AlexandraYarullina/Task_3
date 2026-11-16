@@ -17,21 +17,15 @@ public class MainPage {
     // локатор для кнопки Войти в аккаунт
     private By loginMainPageButton = By.xpath("//button[text()='Войти в аккаунт']");
     // локатор для копки Личный Кабинет
-    private By personalAccountButton = By.xpath("//p[@class='AppHeader_header__linkText__3q_va ml-2' and text()='Личный Кабинет']");
+    private By personalAccountButton = By.xpath("//p[text()='Личный Кабинет']");
     // локатор для раздела Булки
-    private By sectionBun = By.xpath(".//span[text()='Булки']");
+    private By sectionBun = By.xpath(".//span[text()='Булки']/parent::div");
     // локатор для раздела Соусы
-    private By sectionSauce = By.xpath(".//span[text()='Соусы']");
+    private By sectionSauce =  By.xpath(".//span[text()='Соусы']/parent::div");
     // локатор для раздела Начинки
-    private By sectionFilling = By.xpath(".//span[text()='Начинки']");
-    //Кнопка Оформить заказ
+    private By sectionFilling = By.xpath(".//span[text()='Начинки']/parent::div");
+    // локатор для копки Оформить заказ
     private By orderButton = By.xpath(".//button[text()='Оформить заказ']");
-    //Кнопка раздела Начинки - активная
-    private By activeFillingButton = By.xpath("//div[@class='tab_tab__1SPyG tab_tab_type_current__2BEPc pt-4 pr-10 pb-4 pl-10 noselect']");
-    //Кнопка раздела Соусы - активная
-    private By activeSauceButton = By.xpath("//div[@class='tab_tab__1SPyG tab_tab_type_current__2BEPc pt-4 pr-10 pb-4 pl-10 noselect']");
-    //Кнопка раздела Булки - активная
-    private By activeBunButton = By.xpath("//div[@class='tab_tab__1SPyG tab_tab_type_current__2BEPc pt-4 pr-10 pb-4 pl-10 noselect']");
 
     // конструктор класса
     public MainPage(WebDriver driver) {
@@ -45,7 +39,7 @@ public class MainPage {
 
     @Step("Ожидание загрузки главной страницы")
     public void waitForLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(5))
+        new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.visibilityOfElementLocated(sectionBun));
     }
 
@@ -63,35 +57,38 @@ public class MainPage {
     public void checkSectionBunClick () {
         driver.findElement(sectionBun).click();
     }
+
     @Step("Нажатие на раздел Соусы")
     public void checkSectionSauceClick () {
-        waitForVisibility(sectionSauce);
         driver.findElement(sectionSauce).click();
     }
-    @Step("Нажатие на на раздел Начинки")
+
+    @Step("Нажатие на раздел Начинки")
     public void checkSectionFillingClick () {
-        waitForVisibility(sectionFilling);
         driver.findElement(sectionFilling).click();
     }
-    @Step("Ожидание загрузки элементов")
-    public void waitForVisibility(By element) {
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfElementLocated(element));
+
+    @Step("Проверка активен ли раздел 'Булки'")
+    public boolean isBunsTabActive() {
+        return new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.attributeContains(sectionBun, "class", "tab_tab_type_current"));
     }
 
-    @Step("Проверка видимости надписи раздела 'Булки'")
-    public boolean sectionBunIsDisplayed() {
-        return driver.findElement(activeBunButton).isDisplayed();
+    @Step("Проверка активен ли раздел 'Соусы'")
+    public boolean isSaucesTabActive() {
+        return new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.attributeContains(sectionSauce, "class", "tab_tab_type_current"));
     }
 
-    @Step("Проверка видимости надписи раздела 'Соусы'")
-    public boolean sectionSauceIsDisplayed() {
-        return driver.findElement(activeSauceButton).isDisplayed();
+    @Step("Проверка активен ли раздел 'Начинки'")
+    public boolean isFillingsTabActive() {
+        return new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.attributeContains(sectionFilling, "class", "tab_tab_type_current"));
     }
 
-    @Step("Проверка видимости надписи раздела 'Начинки'")
-    public boolean sectionFillingIsDisplayed() {
-        return driver.findElement(activeFillingButton).isDisplayed();
+    @Step("Проверка видимости кнопки 'Оформить заказ', авторизованного пользователя")
+    public boolean orderButtonIsDisplayed() {
+        return driver.findElement(orderButton).isDisplayed();
     }
 }
 

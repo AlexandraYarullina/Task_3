@@ -10,7 +10,7 @@ import java.time.Duration;
 
 import static org.example.utils.Constants.URL_RECOVERY_PASSWORD_PAGE;
 
-// класс Восстановление пароля
+    // класс Восстановление пароля
 public class RecoveryPasswordPage {
     private WebDriver driver;
 
@@ -31,7 +31,7 @@ public class RecoveryPasswordPage {
 
     @Step("Ожидание загрузки страницы Восстановление пароля")
     public void waitForLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(15))
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(driver.findElement(textRecoveryPassword)));
     }
 

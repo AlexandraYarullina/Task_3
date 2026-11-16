@@ -1,11 +1,16 @@
 package org.example;
 
+import org.example.apirequest.UserRequest;
+import org.example.pojo.DataUser;
 import org.example.pageObject.*;
+import org.example.utils.RandomData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.example.utils.Constants.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserProfileTest extends BaseTest {
@@ -13,27 +18,31 @@ public class UserProfileTest extends BaseTest {
     UserProfilePage userProfilePage;
     RegistrationPage registrationPage;
     LoginPage loginPage;
+    UserRequest userRequest = new UserRequest();
+    DataUser dataUser = new DataUser(RandomData.getRandomEmail(), RandomData.getRandomPassword(),RandomData.getRandomName());
+    private String accessToken;
 
     @BeforeEach
-    public void SetUp() {
+    public void setUp() {
         mainPage = new MainPage(driver);
         userProfilePage = new UserProfilePage(driver);
         registrationPage = new RegistrationPage(driver);
         loginPage = new LoginPage(driver);
+        userRequest.setUp();
+        userRequest.setDataUser(dataUser);
+        //Регистрация и авторизация пользователя
+        // создаём пользователя через API
+        userRequest.createUser();
+        userRequest.loginUser()
+                .then().assertThat().body("success", equalTo(true))
+                .statusCode(OK_STATUS_COD);
 
-        //Авторизация пользователя и переход в личный кабинет
-        // открытие главной страницы
-        registrationPage.openRegistrationPage();
-        // ожидание загрузки страницы регистрации
-        registrationPage.waitForLoad();
-        // нажатие на кнопку 'Личный кабинет'
-        registrationPage.loginRegistrationPageButtonClick();
-        // ожидание загрузки страницы авторизации
-        loginPage.waitForLoad();
+        // открытие страницы авторизации
+        loginPage.openLoginPage();
         // заполняем поле email
-        loginPage.setEmailField(EMAIL);
+        loginPage.setEmailField(dataUser.getEmail());
         // заполняем поле пароль
-        loginPage.setPasswordField(PASSWORD);
+        loginPage.setPasswordField(dataUser.getPassword());
         // нажатие на кнопку 'Войти'
         loginPage.loginLoginPageButtonClick();
         // ожидание загрузки главной страницы
@@ -42,6 +51,7 @@ public class UserProfileTest extends BaseTest {
         mainPage.personalAccountButtonClick();
         // ожидание загрузки страницы "Личный кабинет"
         userProfilePage.waitForLoad();
+        accessToken = userRequest.loginUser().then().extract().path("accessToken");
     }
 
     @Test
@@ -58,8 +68,8 @@ public class UserProfileTest extends BaseTest {
         userProfilePage.constructorButtonClick();
         // ожидание загрузки главной страницы
         mainPage.waitForLoad();
-        // проверка видимости надписи раздела 'Булки'
-        assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
+        // проверка видимости кнопки 'Оформить заказ'
+        assertTrue(mainPage.orderButtonIsDisplayed(), "Авторизация прошла не успешно");
     }
 
     @Test
@@ -69,8 +79,8 @@ public class UserProfileTest extends BaseTest {
         userProfilePage.logoButtonClick();
         // ожидание загрузки главной страницы
         mainPage.waitForLoad();
-        // проверка видимости надписи раздела 'Булки'
-        assertTrue(mainPage.sectionBunIsDisplayed(), "Авторизация прошла не успешно");
+        // проверка видимости кнопки 'Оформить заказ'
+        assertTrue(mainPage.orderButtonIsDisplayed(), "Авторизация прошла не успешно");
     }
 
     @Test
@@ -82,5 +92,13 @@ public class UserProfileTest extends BaseTest {
         loginPage.waitForLoad();
         // проверка видимости надписи 'Войти'
         assertTrue(loginPage.registrationLabelIsDisplayed(), "Переход на страницу авторизации не произошёл");
+    }
+    @AfterEach
+    @DisplayName("Удаление пользователя по токену")
+    public void deleteUser() {
+        if (accessToken!=null) {
+            userRequest.deleteUser(accessToken)
+                    .then().statusCode(ACCEPTED_STATUS_COD);
+        }
     }
 }

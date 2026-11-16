@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.example.utils.Constants.URL_REGISTRATION_PAGE;
-
 // класс Личный Кабинет
 public class UserProfilePage {
     private WebDriver driver;
@@ -21,16 +19,11 @@ public class UserProfilePage {
     //локатор для копки Профиль
     private By profileButton = By.xpath("//a[@href='/account/profile']");
     // локатор для кнопки Выход
-    private By logoutButton = By.xpath("//button[@class='Account_button__14Yp3 text text_type_main-medium text_color_inactive' and text()='Выход']");
+    private By logoutButton = By.xpath("//button[text()='Выход']");
 
     // конструктор класса
     public UserProfilePage(WebDriver driver) {
         this.driver = driver;
-    }
-
-    @Step("Открытие личного кабинета")
-    public void openUserProfilePage(){
-        driver.get(URL_REGISTRATION_PAGE);
     }
 
     @Step("Ожидание загрузки страницы Личный Кабинет")

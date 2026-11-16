@@ -23,7 +23,7 @@ public class LoginPage {
     // локатор для поля кнопки Войти
     private By loginLoginPageButton= By.xpath("//button[text()='Войти']");
     // локатор для поля Восстановить пароль
-    private By recoveryPasswordButton= By.xpath("//a[@class='Auth_link__1fOlj' and text()='Восстановить пароль']");
+    private By recoveryPasswordButton= By.xpath("//a[text()='Восстановить пароль']");
 
     // конструктор класса
     public LoginPage(WebDriver driver) {
@@ -50,19 +50,14 @@ public class LoginPage {
         driver.findElement(loginLoginPageButton).click();
     }
 
-  @Step("Нажатие на кнопку Восстановить пароль")
-    public void recoveryPasswordButtonClick(){
-        driver.findElement(recoveryPasswordButton).click();
-    }
-
   @Step("Ожидание загрузки страницы авторизации")
   public void waitForLoad() {
-    new WebDriverWait(driver, Duration.ofSeconds(10))
+    new WebDriverWait(driver, Duration.ofSeconds(3))
             .until(ExpectedConditions.visibilityOfElementLocated(registrationLabel));
   }
+
    @Step("Проверка видимости надписи 'Войти'")
   public boolean registrationLabelIsDisplayed() {
     return driver.findElement(registrationLabel).isDisplayed();
   }
-
 }

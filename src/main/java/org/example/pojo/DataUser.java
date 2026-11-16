@@ -1,4 +1,4 @@
-package org.example.POJO;
+package org.example.pojo;
 
 public class DataUser {
     private String email;
@@ -8,7 +8,6 @@ public class DataUser {
     public DataUser(){}
 
     public DataUser(String email, String password, String name) {
-
         this.email = email;
         this.password = password;
         this.name = name;
